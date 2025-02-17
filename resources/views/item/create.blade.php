@@ -17,6 +17,6 @@
         <br>
         <button type="submit">Add Item</button> //Tombol untuk mengirim data ke server
     </form>
-    <a href="{{ route('items.index') }}">Back to List</a> // Link untuk kembali ke daftar item 
+    <a href="{{ route('items.index') }}">Back to List</a> // Link untuk kembali ke daftar Item 
 </body>
 </html>
