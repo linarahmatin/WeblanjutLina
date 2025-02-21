@@ -1,7 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route; // Mengimpor facade Route untuk mendefinisikan rute dalam aplikasi Laravel
-use App\Http\Controllers\ItemController; // Mengimpor ItemController untuk digunakan dalam pengaturan rute
+use Illuminate\Support\Facades\Route; // Menggunakan facade Route untuk mendefinisikan rute
+use App\Http\Controllers\ItemController; // Mengimpor ItemController agar bisa digunakan tanpa menuliskan namespacenya
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PhotoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,9 +25,7 @@ Route::get('/', function () { // Rute untuk halaman utama ('/') yang menampilkan
 
 Route::resource('items', ItemController::class); // Rute resource untuk 'items' yang secara otomatis mengatur rute CRUD 
 
-Route::get('/hello', function () { 
-return 'Hello World'; 
-}); 
+Route::get('hello', [WelcomeController::class,'hello']);
 
 Route::get('/world', function () { 
     return 'World'; 
@@ -109,4 +113,14 @@ Route::get('/user/{name?}', function ($name='John') {
 //     Route::view('/welcome', 'welcome'); 
 //     Route::view('/welcome', 'welcome', ['name' => 'Taylor']); 
 
-    //Membuat Controller 
+    Route::get('/', [HomeController::class, 'index']);
+    Route::get('/about', [AboutController::class, 'about']);
+    Route::get('/articles/{id}', [ArticleController::class, 'articles']);
+    Route::resource('photos', PhotoController::class);
+
+    Route::resource('photos', PhotoController::class)->only([ 
+        'index', 'show' 
+        ]); 
+        Route::resource('photos', PhotoController::class)->except([ 
+        'create', 'store', 'update', 'destroy' 
+        ]); 
