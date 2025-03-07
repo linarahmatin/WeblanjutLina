@@ -32,9 +32,7 @@ class UserController extends Controller
     
 
 
-        $user = UserModel::findOr(20, ['username', 'nama'], function () {
-            abort(404);
-        });
+        $user = UserModel::where('username', 'manager9')->firstOrfail();
         return view('user', [ 'data' => $user]);
     }
 }
