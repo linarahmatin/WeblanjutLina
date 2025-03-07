@@ -36,19 +36,52 @@ class UserController extends Controller
         // dd($user);
 
         // praktikum 2.4
-        $user = UserModel :: firstOrNew (
-            [
-                'username' => 'managerr33' ,
-                'nama' => 'manager Tiga Tiga',
-                'password' => Hash::make('12345'),
-                'level_id' => 2
-            ],
-        );
-        $user->save();
+        // $user = UserModel :: firstOrNew (
+        //     [
+        //         'username' => 'managerr33' ,
+        //         'nama' => 'manager Tiga Tiga',
+        //         'password' => Hash::make('12345'),
+        //         'level_id' => 2
+        //     ],
+        // );
+        // $user->save();
 
-        // $jumlahPengguna = UserModel::count();
+        // // $jumlahPengguna = UserModel::count();
 
-        // return view('user', ['jumlahPengguna' => $jumlahPengguna]);
-        return view('user', [ 'data' => $user]);
+        // // return view('user', ['jumlahPengguna' => $jumlahPengguna]);
+        // return view('user', [ 'data' => $user]);
+        $user = UserModel::create([
+            'username' => 'manager11',
+            'nama' => 'Manager11',
+            'password' => Hash::make('12345'),
+            'level_id' => 2,
+        ]);
+        
+        $user->username = 'manager12';
+        
+        // $user->isDirty(); // true
+        // $user->isDirty('username'); // true
+        // $user->isDirty('nama'); // false
+        // $user->isDirty(['nama', 'username']); // true
+        
+        // $user->isClean(); // false
+        // $user->isClean('username'); // false
+        // $user->isClean('nama'); // true
+        // $user->isClean(['nama', 'username']); // false
+        
+        // $user->save();
+        
+        // $user->isDirty(); // false
+        // $user->isClean(); // true
+        
+    //     dd($user->isDirty());
+    $user->save();
+
+    $user->wasChanged();
+    $user->wasChanged('username');
+    $user->wasChanged(['username', 'level_id']);
+    $user->wasChanged('nama');
+    dd($user->wasChanged(['nama', 'username']));
+
     }
 }
