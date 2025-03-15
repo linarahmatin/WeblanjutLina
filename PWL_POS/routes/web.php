@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\BarangController;
 
 
 /*
@@ -67,3 +68,11 @@ Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit'])->name('ka
 Route::put('/kategori/{id}', [KategoriController::class, 'update'])->name('kategori.update');
 
 Route::post('/kategori/delete/{id}', [KategoriController::class, 'destroy']);
+
+// route barang
+Route::get('/barang', [BarangController::class, 'index']); // menampilkan tabel barang
+Route::get('/barang/create', [BarangController::class, 'create']); // menampilkan form add barang
+Route::post('/barang', [BarangController::class, 'store']); // menyimpan barang ke database
+Route::get('/barang/edit/{id}', [BarangController::class, 'edit'])->name('barang.edit'); // menampilkan form edit barang
+Route::put('/barang/{id}', [BarangController::class, 'update'])->name('barang.update'); // memperbarui data barang
+Route::post('/barang/delete/{id}', [BarangController::class, 'destroy'])->name('barang.destroy'); // menghapus barang
