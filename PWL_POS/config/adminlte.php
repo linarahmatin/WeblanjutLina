@@ -310,9 +310,15 @@ return [
             'topnav_right' => true,
         ],
         [
-            'text' => 'Manage Kategori', // add navbar manage kategori
+            'text' => 'Kategori', // add navbar manage kategori
             'url' => '/kategori',
-            'icon' => 'fas fa-layer-group',
+            'icon' => 'bi-tags',
+            'topnav' => true,
+        ],
+        [
+            'text' => 'Barang', // add navbar manage barang
+            'url' => '/barang',
+            'icon' => 'bi-box',
             'topnav' => true,
         ],
 
