@@ -154,9 +154,9 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
-    'layout_fixed_navbar' => null,
-    'layout_fixed_footer' => null,
+    'layout_fixed_sidebar' => true,
+    'layout_fixed_navbar' => true,
+    'layout_fixed_footer' => true,
     'layout_dark_mode' => null,
 
     /*
@@ -310,15 +310,21 @@ return [
             'topnav_right' => true,
         ],
         [
-            'text' => 'Kategori', // add navbar manage kategori
+            'text' => 'Manage Kategori', // add navbar manage kategori
             'url' => '/kategori',
-            'icon' => 'bi-tags',
+            'icon' => 'bi-collection',
             'topnav' => true,
         ],
         [
-            'text' => 'Barang', // add navbar manage barang
+            'text' => 'Manage Barang', // add navbar manage barang
             'url' => '/barang',
-            'icon' => 'bi-box',
+            'icon' => 'bi-collection',
+            'topnav' => true,
+        ],
+        [
+            'text' => 'Manage Level', // add navbar manage level
+            'url' => '/level',
+            'icon' => 'bi-collection',
             'topnav' => true,
         ],
 
