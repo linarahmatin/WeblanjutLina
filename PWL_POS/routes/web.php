@@ -76,3 +76,11 @@ Route::post('/barang', [BarangController::class, 'store']); // menyimpan barang 
 Route::get('/barang/edit/{id}', [BarangController::class, 'edit'])->name('barang.edit'); // menampilkan form edit barang
 Route::put('/barang/{id}', [BarangController::class, 'update'])->name('barang.update'); // memperbarui data barang
 Route::post('/barang/delete/{id}', [BarangController::class, 'destroy'])->name('barang.destroy'); // menghapus barang
+
+// Route User
+Route::get('/users', [UserController::class, 'index']); // menampilkan tabel user
+Route::get('/users/create', [UserController::class, 'create']); // menampilkan form add user
+Route::post('/users', [UserController::class, 'store']); // menyimpan user ke database
+Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('users.edit'); // menampilkan form edit user
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update'); // memperbarui data user
+Route::post('/users/delete/{id}', [UserController::class, 'destroy'])->name('users.destroy'); // menghapus user
