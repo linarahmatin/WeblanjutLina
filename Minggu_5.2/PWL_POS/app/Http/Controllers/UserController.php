@@ -254,7 +254,7 @@ class UserController extends Controller
 
         $activeMenu = 'user'; // set menu yang sedang aktif
 
-        $level = LevelModel::all();  
+        $level = LevelModel::all(); // ambil data level untuk filter level
 
         return view('user.index', [
             'breadcrumb' => $breadcrumb,
@@ -270,9 +270,9 @@ class UserController extends Controller
         $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
             ->with('level');
 
-        // filter data user berdasarkan level_id
+        // Filter data user berdasarkan level_id
         if ($request->level_id) {
-            $users ->where('level_id', $request->level_id);
+            $users->where('level_id', $request->level_id);
         }
 
         return DataTables::of($users)
