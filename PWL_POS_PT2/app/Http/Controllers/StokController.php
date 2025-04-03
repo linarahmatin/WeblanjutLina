@@ -196,126 +196,125 @@ class StokController extends Controller
     }
 
     public function import_ajax(Request $request)
-     {
-         if ($request->ajax() || $request->wantsJson()) {
-             $rules = [
-                 'file_stok' => ['required', 'mimes:xlsx', 'max:1024']
-             ];
-     
-             $validator = Validator::make($request->all(), $rules);
-             if ($validator->fails()) {
-                 return response()->json([
-                     'status' => false,
-                     'message' => 'Validasi Gagal',
-                     'msgField' => $validator->errors()
-                 ]);
-             }
-     
-             $file = $request->file('file_stok');
-     
-             $reader = IOFactory::createReader('Xlsx');
-             $reader->setReadDataOnly(true);
-             $spreadsheet = $reader->load($file->getRealPath());
-             $sheet = $spreadsheet->getActiveSheet();
-             $data = $sheet->toArray(null, false, true, true);
-     
-             $insert = [];
-             if (count($data) > 1) {
-                 foreach ($data as $row => $value) {
-                     if ($row > 1) {
-                         $insert[] = [
-                             'barang_id'    => $value['B'], // Pastikan ini ID barang yang valid
-                             'user_id'      => $value['C'], // ID user yang input
-                             'stok_tanggal' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value['D'])->format('Y-m-d H:i:s'),
-                             'stok_jumlah'  => (int)$value['E'],
-                             'created_at'   => now(),
-                             'updated_at'   => now(),
-                         ];
-                     }
-                 }
-     
-                 if (count($insert) > 0) {
-                     \App\Models\StokModel::insertOrIgnore($insert);
-                 }
-     
-                 return response()->json([
-                     'status' => true,
-                     'message' => 'Data stok berhasil diimport'
-                 ]);
-             } else {
-                 return response()->json([
-                     'status' => false,
-                     'message' => 'Tidak ada data yang diimport'
-                 ]);
-             }
-         }
-     
-         return redirect('/');
-     }
- 
-     public function export_excel()
-     {
-         $stok = \App\Models\StokModel::with(['barang', 'user'])
-             ->orderBy('stok_tanggal')
-             ->get();
-     
-         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-         $sheet = $spreadsheet->getActiveSheet();
-     
-         $sheet->setCellValue('A1', 'No');
-         $sheet->setCellValue('B1', 'Nama Barang');
-         $sheet->setCellValue('C1', 'User Input');
-         $sheet->setCellValue('D1', 'Tanggal Stok');
-         $sheet->setCellValue('E1', 'Jumlah Stok');
-     
-         $sheet->getStyle('A1:E1')->getFont()->setBold(true);
-     
-         $no = 1;
-         $baris = 2;
-         foreach ($stok as $item) {
-             $sheet->setCellValue('A' . $baris, $no);
-             $sheet->setCellValue('B' . $baris, $item->barang->barang_nama ?? '-');
-             $sheet->setCellValue('C' . $baris, $item->user->nama ?? '-');
-             $sheet->setCellValue('D' . $baris, $item->stok_tanggal);
-             $sheet->setCellValue('E' . $baris, $item->stok_jumlah);
-             $baris++;
-             $no++;
-         }
-     
-         foreach (range('A', 'E') as $columnID) {
-             $sheet->getColumnDimension($columnID)->setAutoSize(true);
-         }
-     
-         $sheet->setTitle('Data Stok');
-     
-         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-         $filename = 'Data_Stok_' . date('Y-m-d_H-i-s') . '.xlsx';
-     
-         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-         header('Content-Disposition: attachment;filename="' . $filename . '"');
-         header('Cache-Control: max-age=0');
-         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-         header('Cache-Control: cache, must-revalidate');
-         header('Pragma: public');
-     
-         $writer->save('php://output');
-         exit;
-     }
- 
-     public function export_pdf()
-     {
-         set_time_limit(300);
-     
-         $stok = \App\Models\StokModel::with(['barang', 'user'])
-             ->orderBy('stok_tanggal')
-             ->get();
-     
-         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('stok.export_pdf', ['stok' => $stok]);
-         $pdf->setPaper('a4', 'portrait');
-         $pdf->setOption("isRemoteEnabled", true);
-     
-         return $pdf->stream('Data Stok_' . date('Y-m-d H:i:s') . '.pdf');
-     }
-     
- }
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_stok' => ['required', 'mimes:xlsx', 'max:1024']
+            ];
+    
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+    
+            $file = $request->file('file_stok');
+    
+            $reader = IOFactory::createReader('Xlsx');
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+            $data = $sheet->toArray(null, false, true, true);
+    
+            $insert = [];
+            if (count($data) > 1) {
+                foreach ($data as $row => $value) {
+                    if ($row > 1) {
+                        $insert[] = [
+                            'barang_id'    => $value['B'], // Pastikan ini ID barang yang valid
+                            'user_id'      => $value['C'], // ID user yang input
+                            'stok_tanggal' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value['D'])->format('Y-m-d H:i:s'),
+                            'stok_jumlah'  => (int)$value['E'],
+                            'created_at'   => now(),
+                            'updated_at'   => now(),
+                        ];
+                    }
+                }
+    
+                if (count($insert) > 0) {
+                    \App\Models\StokModel::insertOrIgnore($insert);
+                }
+    
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data stok berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
+            }
+        }
+    
+        return redirect('/');
+    }
+
+    public function export_excel()
+    {
+        $stok = \App\Models\StokModel::with(['barang', 'user'])
+            ->orderBy('stok_tanggal')
+            ->get();
+    
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+    
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Nama Barang');
+        $sheet->setCellValue('C1', 'User Input');
+        $sheet->setCellValue('D1', 'Tanggal Stok');
+        $sheet->setCellValue('E1', 'Jumlah Stok');
+    
+        $sheet->getStyle('A1:E1')->getFont()->setBold(true);
+    
+        $no = 1;
+        $baris = 2;
+        foreach ($stok as $item) {
+            $sheet->setCellValue('A' . $baris, $no);
+            $sheet->setCellValue('B' . $baris, $item->barang->barang_nama ?? '-');
+            $sheet->setCellValue('C' . $baris, $item->user->nama ?? '-');
+            $sheet->setCellValue('D' . $baris, $item->stok_tanggal);
+            $sheet->setCellValue('E' . $baris, $item->stok_jumlah);
+            $baris++;
+            $no++;
+        }
+    
+        foreach (range('A', 'E') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+    
+        $sheet->setTitle('Data Stok');
+    
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data_Stok_' . date('Y-m-d_H-i-s') . '.xlsx';
+    
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+    
+        $writer->save('php://output');
+        exit;
+    }
+
+    public function export_pdf()
+    {
+        set_time_limit(300);
+    
+        $stok = \App\Models\StokModel::with(['barang', 'user'])
+            ->orderBy('stok_tanggal')
+            ->get();
+    
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('stok.export_pdf', ['stok' => $stok]);
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->setOption("isRemoteEnabled", true);
+    
+        return $pdf->stream('Data Stok_' . date('Y-m-d H:i:s') . '.pdf');
+    }
+}
