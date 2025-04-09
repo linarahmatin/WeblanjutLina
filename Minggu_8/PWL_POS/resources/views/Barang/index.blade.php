@@ -30,27 +30,27 @@
                     </div>
                 </div>
             </div>
-             @if (session('success'))
-             <div class="alert alert-success">{{ session('success') }}</div>
-             @endif
-             @if (session('error'))
-             <div class="alert alert-danger">{{ session('error') }}</div>
-             @endif
-             <table class="table table-bordered table-sm table-striped table-hover" id="table_barang">
-             <thead>
+                @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+                @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+                <table class="table table-bordered table-sm table-striped table-hover" id="table_barang">
+                <thead>
                 <tr>
-                <th style="text-align: center;">No</th>
-                     <th style="text-align: center;">Id Barang</th>
-                     <th style="text-align: center;">Kode Barang</th>
-                     <th style="text-align: center;">Nama Barang</th>
-                     <th style="text-align: center;">Kategori</th>
-                     <th style="text-align: center;">Harga Beli</th>
-                     <th style="text-align: center;">Harga Jual</th>
-                     <th style="text-align: center;">Aksi</th>
+                    <th style="text-align: center;">No</th>
+                    <th style="text-align: center;">Id Barang</th>
+                    <th style="text-align: center;">Kode Barang</th>
+                    <th style="text-align: center;">Nama Barang</th>
+                    <th style="text-align: center;">Kategori</th>
+                    <th style="text-align: center;">Harga Beli</th>
+                    <th style="text-align: center;">Harga Jual</th>
+                    <th style="text-align: center;">Aksi</th>
                 </tr>
-             </thead>
-             <tbody></tbody>
-             </table>
+                </thead>
+                <tbody></tbody>
+                </table>
         </div>
     </div>
     <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
@@ -93,7 +93,7 @@
                     },
                     {
                         data: "barang_kode",
-                        className: "",
+                        className: "text-center",
                         width: "10%",
                         orderable: true,
                         searchable: true
