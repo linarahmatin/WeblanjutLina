@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable; //Implementasi class Authenticatable
 
 
-class UserModel extends Authenticatable
+class UserModel extends Authenticatable implements JWTSubject
 {
     public function getJWTIdentifier(){
         return $this->getKey();
@@ -18,7 +18,7 @@ class UserModel extends Authenticatable
     public function getJWTCustomClaims(){
         return[];
     }
-    
+
     use HasFactory;
 
     protected $table = 'm_user'; //mendefinisikan nama tabel yang digunakan oleh model ini
